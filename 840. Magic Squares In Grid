@@ -1,0 +1,40 @@
+class Solution {
+public:
+	int numMagicSquaresInside(vector<vector<int>>& grid) {
+		if (grid.size() < 3)
+			return 0;
+		int result = 0;
+		for (int i = 0; i <= grid.size() - 3; i++) {
+			for (int j = 0; j <= grid[i].size() - 3; j++) {
+				if (isMagicSquare(grid, i, j)) {
+					result++;
+				}
+			}
+		}
+		return result;
+	}
+
+	bool isMagicSquare(vector<vector<int>>& grid, int i, int j) {
+		int sum;
+		set<int> s({1, 2, 3, 4, 5, 6, 7, 8, 9});
+		for (int r = 0; r < 3; r++) {
+			int sumx = 0;
+			int sumy = 0;
+			for (int c = 0; c < 3; c++) {
+				s.erase(grid[i + r][j + c]);
+				sumx += grid[i + r][j + c];
+				sumy += grid[i + c][j + r];
+			}
+			if (sumx != sumy)
+				return false;
+			sum = sumx;
+		}
+		if (!s.empty())
+			return false;
+		if (sum != grid[i][j] + grid[i + 1][j + 1] + grid[i + 2][j + 2])
+			return false;
+		if (sum != grid[i + 2][j] + grid[i + 1][j + 1] + grid[i][j + 2])
+			return false;
+		return true;
+	}
+};
